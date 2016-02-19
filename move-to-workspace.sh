@@ -12,8 +12,8 @@ fi
 
 names="$(
 	i3-msg -t get_workspaces |\
-	grep -Po '"name":.*?[^\\]",' |\
-	sed 's/"name":"\(.*\)".*/\1/g'
+	jq '.[].name' |\
+	sed 's/"//g'
 )"
 
 wanted="$(grep "^$1" <<< "$names")"
