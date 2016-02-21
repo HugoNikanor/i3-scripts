@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# moves the i3-wm focus to the workspace which have a name starting with the 
+# moves the window to the workspace which have a name starting with the 
 # provided number. Note that only 0-9 is supported
-
 hasNumber="$(sed -n 's/^\([1-9]\|10\)$/\1/p' <<< $1)"
 
 if [ -z "$hasNumber" ]; then
@@ -26,5 +25,5 @@ fi
 #fullwanted="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output'):$wanted"
 #echo "$fullwanted"
 
-i3-msg "workspace $wanted"
+i3-msg "move container to workspace $wanted"
 
