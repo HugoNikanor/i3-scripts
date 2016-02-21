@@ -7,7 +7,7 @@
 # TODO it wraps weirdly, and creates new workspaces a bit weird to
 
 # get current display and workspace
-currentOut="$(i3-msg -t get_workspaces | jq 'map(select(.focused))[0].output' | sed 's/"//g')"
+currentOut="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output')"
 workspaceNum=$(i3-msg -t get_workspaces | jq "map(select(.focused))[0].name" | sed -n  "s/^\"$currentOut:\([1-9]\|10\).*/\1/p")
 # you dont want to swith to the current workspace
 workspaceNum="$(($workspaceNum + 1))"

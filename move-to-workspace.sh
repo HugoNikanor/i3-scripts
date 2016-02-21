@@ -10,20 +10,21 @@ if [ -z "$hasgrep" ]; then
 	exit 1
 fi
 
+currentOut="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output')"
+
 names="$(
 	i3-msg -t get_workspaces |\
-	jq '.[].name' |\
-	sed 's/"//g'
+	jq -r '.[].name'
 )"
 
-wanted="$(grep "^$1" <<< "$names")"
+wanted="$(grep "^$currentOut:$1" <<< "$names")"
 
 # create workspace if it doesn't exist 
 if [ -z "$wanted" ]; then
-	wanted="$1"
+	wanted="$currentOut:$1"
 fi
-fullwanted="$(i3-msg -t get_workspaces | jq 'map(select(.focused))[0].output' | sed 's/"//g'):$wanted"
+#fullwanted="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output'):$wanted"
 #echo "$fullwanted"
 
-i3-msg "workspace $fullwanted"
+i3-msg "workspace $wanted"
 
