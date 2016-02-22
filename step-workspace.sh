@@ -6,9 +6,7 @@
 
 # TODO it wraps weirdly, and creates new workspaces a bit weird to
 
-echo "$1"
-
-if ! [ "$1" == "1" ] || [ "$1" == "-1" ]; then
+if ! $( [ "$1" == "1" ] || [ "$1" == "-1" ] ); then
 	echo "use step-workspace 1 to move to the next workspace"
 	echo "and -1 for previus workspace"
 	exit 1
@@ -35,6 +33,9 @@ for x in $(seq "$workspaceNum" "$1" "$goalNum"); do
 	wanted="$(i3-msg -t get_workspaces |\
 	   	jq "map(select(.output==\"$currentOut\"))[].name" |\
 	   	sed -n "s/^\"$currentOut:\($x\).*/\1/p")"
+
+	echo "————————————————————————————————————————————————————————————————————————————————"
+	echo "$wanted"
 	# try to go to it
 	ret="$(move-to-workspace "$wanted" | jq '.[0].success')"
 
