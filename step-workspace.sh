@@ -18,7 +18,7 @@ currentOut="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output'
 workspaceNum=$(
 		i3-msg -t get_workspaces |\
 		jq "map(select(.focused))[0].name" |\
-		sed -n  "s/^\"$currentOut:\([1-9]\|10\).*/\1/p")
+		sed -n  "s/^\"\([1-9]\|10\) $currentOut.*/\1/p")
 
 # you dont want to swith to the current workspace
 workspaceNum="$(($workspaceNum + $1))"
@@ -31,8 +31,8 @@ fi
 for x in $(seq "$workspaceNum" "$1" "$goalNum"); do
 	# check if the workspace exists
 	wanted="$(i3-msg -t get_workspaces |\
-	   	jq "map(select(.output==\"$currentOut\"))[].name" |\
-	   	sed -n "s/^\"$currentOut:\($x\).*/\1/p")"
+		jq "map(select(.output==\"$currentOut\"))[].name" |\
+		sed -n "s/^\"\($x\) $currentOut.*/\1/p")"
 
 	echo "————————————————————————————————————————————————————————————————————————————————"
 	echo "$wanted"

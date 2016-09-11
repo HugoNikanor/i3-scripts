@@ -4,10 +4,10 @@
 # keep the number after from before after the rename
 
 currentOut="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output')"
-workspaceNum=$(i3-msg -t get_workspaces | jq "map(select(.focused))[0].name" | sed -n  "s/^\"$currentOut:\([1-9]\|10\).*/\1/p")
+workspaceNum=$(i3-msg -t get_workspaces | jq "map(select(.focused))[0].name" | sed -n  "s/^\"\([1-9]\|10\) $currentOut.*/\1/p")
 
 currentname=$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].name')
-namePre="$(grep -Po "^$currentOut:$workspaceNum" <<< $currentname)"
+namePre="$(grep -Po "^$workspaceNum $currentOut" <<< $currentname)"
 newname="$(echo "" | dmenu -p "rename '$namePre':")"
 
 if [ -n "$newname" ]; then

@@ -20,7 +20,7 @@ wanted="$(grep "^$currentOut:$1" <<< "$names")"
 
 # create workspace if it doesn't exist 
 if [ -z "$wanted" ]; then
-	wanted="$currentOut:$1"
+	wanted="$1 $currentOut"
 fi
 #fullwanted="$(i3-msg -t get_workspaces | jq -r 'map(select(.focused))[0].output'):$wanted"
 #echo "$fullwanted"
